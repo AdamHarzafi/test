@@ -243,10 +243,57 @@
         .cie-card-front img, .cie-card-back img { width: 100%; height: 100%; object-fit: cover; }
         .cie-card-back { transform: rotateY(180deg) translateZ(0); }
 
-        /* RETTANGOLO PANORAMICO PER LO SCANNER (NIENTE PIU' QUADRATO) */
-        #scanner-container { width: 100%; border-radius: 20px; overflow: hidden; border: 2px solid var(--primary-light); position: relative; background: #000; margin-bottom: 15px; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); min-height: 150px; display: flex; align-items: center; justify-content: center; }
-        #reader { width: 100%; position: relative; padding: 0 !important; border: none !important; }
-        #reader video { width: 100% !important; height: auto !important; border-radius: 18px; display: block; object-fit: cover; }
+        /* NUOVO LAYOUT SCANNER: Panoramico e senza sfocature */
+        #scanner-container { 
+            width: 100%; 
+            height: 200px; 
+            border-radius: 20px; 
+            overflow: hidden; 
+            border: 2px solid var(--border-color); 
+            position: relative; 
+            background: #000; 
+            margin-bottom: 20px; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        #reader { 
+            width: 100%; 
+            height: 100%; 
+            position: relative; 
+            padding: 0 !important; 
+            border: none !important; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        #reader video { 
+            width: 100% !important; 
+            height: 100% !important; 
+            border-radius: 18px; 
+            display: block; 
+            object-fit: cover !important; /* Riempie il rettangolo senza distorsioni */
+        }
+        /* Riquadro virtuale in puro CSS (solo bordo, nessuna sfocatura) */
+        .custom-scanner-frame {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 85%;
+            height: 110px;
+            border: 3px solid rgba(255, 255, 255, 0.9);
+            border-radius: 14px;
+            pointer-events: none; /* Permette il click through se necessario */
+            z-index: 10;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            animation: pulseFrame 2s infinite var(--apple-ease);
+        }
+        @keyframes pulseFrame {
+            0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+            50% { transform: translate(-50%, -50%) scale(1.02); opacity: 1; border-color: var(--primary); }
+            100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+        }
 
         /* Dashboard styles */
         #app-dashboard { display: none; opacity: 0; transition: opacity 0.5s ease; padding-bottom: 80px;}
@@ -809,6 +856,7 @@
                         
                         <div id="scanner-container">
                             <div id="reader"></div>
+                            <div class="custom-scanner-frame"></div>
                         </div>
                         
                         <div class="result-banner" id="scan-result" style="margin-bottom: 20px; text-align: center; display: none; border-radius: 16px; padding: 15px;"></div>
@@ -1202,16 +1250,12 @@
 
             function startCIEScanner() {
                 const readerElement = document.getElementById('reader');
-                readerElement.innerHTML = '<div style="color:white; padding: 40px 20px; text-align:center; font-weight:600;">Richiesta accesso fotocamera...</div>';
+                readerElement.innerHTML = '<div style="color:white; padding: 40px 20px; text-align:center; font-weight:600; display:flex; align-items:center; height:100%; justify-content:center;">Richiesta accesso fotocamera...</div>';
                 
+                // Rimosso qrbox per evitare l'oscuramento invasivo.
+                // Usiamo l'intero video (adattato via CSS) per scansionare.
                 const config = {
-                    fps: 15,
-                    // Utilizziamo un box orizzontale ideale per catturare il lungo barcode 1D (senza forzare il ratio dello schermo intero)
-                    qrbox: function(viewfinderWidth, viewfinderHeight) {
-                        const width = viewfinderWidth * 0.9;
-                        const height = 120; // Altezza fissa stretta, tipica per codici a barre
-                        return { width: width, height: height };
-                    }
+                    fps: 15
                 };
 
                 html5QrCode = new Html5Qrcode("reader");
@@ -1219,21 +1263,16 @@
                     { facingMode: "environment" },
                     config,
                     (decodedText, decodedResult) => {
-                        // Verifica formale se è un Codice Fiscale tramite Regex standard (16 Alfanumerici)
                         const cfRegex = /^[A-Z]{6}\d{2}[A-Z]\d{2}[A-Z]\d{3}[A-Z]$/i;
                         const cfMatchFallback = decodedText.match(/[A-Z0-9]{16}/i); 
                         
                         let extractedCF = null;
 
-                        if (cfRegex.test(decodedText)) {
-                            extractedCF = decodedText;
-                        } else if (cfMatchFallback) {
-                            extractedCF = cfMatchFallback[0];
-                        }
+                        if (cfRegex.test(decodedText)) { extractedCF = decodedText; } 
+                        else if (cfMatchFallback) { extractedCF = cfMatchFallback[0]; }
 
                         if (extractedCF && extractedCF.length === 16) {
                             const scannedCF = extractedCF.toUpperCase();
-                            // Appena trovato un match sicuro, interrompe immediatamente il video
                             stopScannerSafe().then(() => {
                                 verifyScannedCF(scannedCF);
                             }).catch(() => {
@@ -1242,10 +1281,10 @@
                         }
                     },
                     (errorMessage) => { 
-                        // Silenzioso in caso di scansioni continue a vuoto
+                        // Silenzioso
                     }
                 ).catch((err) => {
-                    readerElement.innerHTML = `<div style="color:var(--danger); padding: 40px 20px; text-align:center; font-weight:600; background:#fff;">Accesso fotocamera negato o non supportato.<br><span style="font-size:0.8rem; color:#64748b; font-weight:500;">Controlla i permessi del browser o usa l'inserimento manuale.</span></div>`;
+                    readerElement.innerHTML = `<div style="color:var(--danger); padding: 40px 20px; text-align:center; font-weight:600; background:#fff; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">Accesso fotocamera negato.<br><span style="font-size:0.8rem; color:#64748b; font-weight:500; margin-top:5px;">Controlla i permessi o usa l'inserimento manuale.</span></div>`;
                 });
             }
 
@@ -1262,7 +1301,6 @@
                 });
             }
 
-            // CONTROLLO FIREBASE DA SCANNER CIE E INVIO EMAIL DI RECUPERO
             function verifyScannedCF(cfInputVal) {
                 const scanResult = document.getElementById('scan-result');
                 scanResult.style.display = 'block';
@@ -1273,7 +1311,6 @@
 
                 db.collection("studenti").where("cf", "==", cfInputVal).get().then((snap) => {
                     if (!snap.empty && snap.docs[0].data().email) {
-                        // Il codice fiscale è presente, eseguiamo l'invio
                         auth.sendPasswordResetEmail(snap.docs[0].data().email).then(() => { 
                             scanResult.innerHTML = `<svg viewBox="0 0 24 24" style="width: 36px; height: 36px; fill: var(--success); margin-bottom: 10px; display: block; margin: 0 auto 10px;"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"/></svg><span style="font-weight:900; font-size:1.15rem;">Identità Confermata</span><br><span style="font-weight:600; font-size:0.95rem; display:block; margin-top:5px;">Abbiamo inviato le istruzioni all'email di ${snap.docs[0].data().nome}.</span>`; 
                             scanResult.style.background = "#ecfdf5";
