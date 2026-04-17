@@ -225,7 +225,7 @@
         /* --- STILI RECUPERO PASSWORD (SOLO CIE) --- */
         .recovery-hero { 
             position: relative; 
-            background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%); 
+            background: linear-gradient(135deg, #ffffff 0%, #f4f4f5 100%); 
             padding: 40px 20px 20px; 
             display: flex; flex-direction: column; justify-content: center; align-items: center; 
             overflow: hidden; width: 100%; border-radius: 36px 36px 0 0; 
@@ -237,7 +237,7 @@
         .result-banner { background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 16px; padding: 20px; text-align: center; color: #065f46; font-size: 0.95rem; font-weight: 600; line-height: 1.5; margin-top: 20px; display: none; animation: fastFadeIn 0.4s var(--apple-ease); }
         .result-banner svg { width: 32px; height: 32px; fill: var(--success); margin-bottom: 10px; }
 
-        /* Stili Modale Scanner CIE 3D (Accelerazione Hardware su GPU per zero lag) */
+        /* Stili Modale Scanner CIE 3D (Accelerazione Hardware su GPU) */
         .cie-card-container { 
             width: 260px; height: 165px; perspective: 1200px; margin: 0 auto; position: relative; z-index: 2; 
             animation: floatCard 5s ease-in-out infinite; 
@@ -293,7 +293,7 @@
             100% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
         }
 
-        /* STILI SPECIFICI MODALE AVVISO CIE (Bottom Sheet Desktop -> Rounded Fullscreen Mobile) */
+        /* STILI MODALE AVVISO CIE (Desktop = Bottom Sheet) */
         .custom-bottom-sheet { align-items: flex-end; padding: 0; }
         .custom-bottom-sheet .avviso-modal-content { 
             background: #ffffff; border-radius: 36px 36px 0 0; padding: 40px; 
@@ -302,18 +302,6 @@
             border-bottom: none; box-shadow: 0 -20px 50px rgba(0,0,0,0.2); 
         }
         .custom-bottom-sheet.active .avviso-modal-content { transform: translateY(0); }
-
-        @media (max-width: 600px) {
-            .custom-bottom-sheet { align-items: flex-end; padding: 0; }
-            .custom-bottom-sheet .avviso-modal-content { 
-                border-radius: 32px 32px 0 0; height: 95dvh; max-height: 95dvh; max-width: 100%; 
-                padding: 30px 20px; transform: translateY(100%); 
-            }
-            .avviso-inner-content {
-                display: flex; flex-direction: column; justify-content: flex-start; height: 100%;
-                padding-top: 10px;
-            }
-        }
 
         /* Dashboard styles */
         #app-dashboard { display: none; opacity: 0; transition: opacity 0.5s ease; padding-bottom: 80px;}
@@ -475,14 +463,40 @@
             .bento-card p { font-size: 1.05rem; } 
             .bento-card h3 { font-size: 1.5rem; }
             
-            .modal-overlay:not(.custom-bottom-sheet):not(.bottom-sheet) { padding: 0; }
-            .modal-overlay:not(.custom-bottom-sheet):not(.bottom-sheet) .modal-content { padding: calc(60px + env(safe-area-inset-top, 0px)) 24px 24px; border-radius: 0; width: 100%; height: 100%; height: 100dvh; max-width: 100%; max-height: 100%; max-height: 100dvh; }
-            .close-btn { top: calc(15px + env(safe-area-inset-top, 0px)); right: 15px; width: 40px; height: 40px; font-size: 22px; }
+            /* RISOLTO PROBLEMA DEI BORDI ARROTONDATI MANCANTI SU MOBILE */
+            
+            /* 1. Modal Generali (Login) */
+            .modal-overlay:not(.custom-bottom-sheet):not(.bottom-sheet) { padding: 15px; }
+            .modal-overlay:not(.custom-bottom-sheet):not(.bottom-sheet) .modal-content { 
+                padding: calc(30px + env(safe-area-inset-top, 0px)) 24px 24px; 
+                border-radius: 32px; /* Assicura angoli smussati su mobile */
+                width: 100%; height: auto; max-height: 95dvh; 
+            }
+            .close-btn { top: 15px; right: 15px; width: 40px; height: 40px; font-size: 22px; }
 
-            .bottom-sheet-body { padding: 25px 20px calc(25px + env(safe-area-inset-bottom, 0px)); }
-            .recovery-hero { padding: 30px 20px 15px; }
+            /* 2. Modali Bottom-Sheet (Recupero Password Principale) */
+            .modal-overlay.bottom-sheet { padding: 10px; padding-bottom: calc(10px + env(safe-area-inset-bottom, 0px)); align-items: flex-end; }
+            .modal-overlay.bottom-sheet .modal-content {
+                border-radius: 36px; /* Floating Island Style con 4 angoli arrotondati */
+                border-bottom: none;
+            }
+            .bottom-sheet-body { padding: 25px 20px 25px; }
+            .recovery-hero { padding: 30px 20px 15px; border-radius: 36px 36px 0 0; }
+
+            /* 3. Pop-Up Avviso (Full Screen visivo ma con angoli smussati) */
+            .custom-bottom-sheet { align-items: center; padding: 10px; }
+            .custom-bottom-sheet .avviso-modal-content { 
+                border-radius: 32px; /* 4 Angoli arrotondati visibili */
+                height: 96dvh; max-height: 96dvh; 
+                width: 100%; max-width: 100%;
+                padding: 30px 20px; 
+                transform: translateY(100%); 
+            }
+            .avviso-inner-content {
+                display: flex; flex-direction: column; justify-content: center; height: 100%;
+            }
+
             .recovery-title { font-size: 1.5rem; }
-
             .modal-logo-wrapper { margin-top: 10px; margin-bottom: 15px; }
             .auth-title { font-size: 1.7rem; margin-bottom: 20px; }
             .segmented-control { margin-bottom: 20px; padding: 4px; border-radius: 12px;}
@@ -816,14 +830,14 @@
     <!-- MODALE BOTTOM SHEET PER RECUPERO PASSWORD (SOLO CIE) -->
     <div id="forgot-sheet-modal" class="modal-overlay bottom-sheet">
         <div class="modal-content">
-            <button id="forgot-sheet-close" class="close-btn" style="background: rgba(255,255,255,0.8);">&times;</button>
+            <button id="forgot-sheet-close" class="close-btn" style="background: rgba(0,0,0,0.06); color: var(--text-dark);">&times;</button>
             
             <div id="student-forgot-form">
                 
                 <!-- HEADER / ANIMAZIONE CARTE -->
-                <div class="recovery-hero" style="padding-bottom: 10px; padding-top: 30px;">
+                <div class="recovery-hero">
                     <!-- TITOLO SOPRA L'IMMAGINE -->
-                    <h2 class="recovery-title" style="font-size: 1.6rem; margin-bottom: 25px;">Verifica Identità</h2>
+                    <h2 class="recovery-title">Verifica Identità</h2>
                     
                     <div class="cie-card-container" id="cie-anim-container">
                         <div class="cie-card-inner">
@@ -833,7 +847,7 @@
                     </div>
                     
                     <!-- SOTTOTITOLO SOTTO L'IMMAGINE -->
-                    <p class="recovery-subtitle" style="margin-top: 25px; margin-bottom: 5px;">Inquadra il <strong>codice a barre</strong> presente sul retro della tua Carta d'Identità Elettronica.</p>
+                    <p class="recovery-subtitle">Inquadra il <strong>codice a barre</strong> presente sul retro della tua Carta d'Identità Elettronica.</p>
                     <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; font-weight: 600; margin-bottom: 0;">Le immagini potrebbero essere soggette a copyright.</p>
                 </div>
 
@@ -841,14 +855,14 @@
                     
                     <!-- BANNER AVVISO -->
                     <div class="login-rules-banner" id="btn-cie-avviso" style="background: #fffbeb; border-color: #fde68a; color: #d97706; padding: 14px 20px; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; border-radius: 16px; box-shadow: 0 4px 15px rgba(217, 119, 6, 0.08);">
-                        <div style="display: flex; flex-direction: column; text-align: left; gap: 4px;">
+                        <div style="display: flex; flex-direction: column; text-align: left; gap: 4px; overflow: hidden;">
                             <strong style="font-size: 0.95rem; font-weight: 900; letter-spacing: 0.5px;">AVVISO</strong>
-                            <span style="font-size: 0.85rem; font-weight: 600;">A partire dal 3 agosto 2026...</span>
+                            <span style="font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">A partire dal 3 agosto 2026...</span>
                         </div>
                         <svg viewBox="0 0 24 24" fill="currentColor" style="width: 24px; flex-shrink: 0; opacity: 0.8;"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/></svg>
                     </div>
 
-                    <!-- STEP 1: SCANSIONE -->
+                    <!-- SCANSIONE E RISULTATO -->
                     <div id="student-forgot-scan-view">
                         <div id="scanner-container">
                             <div id="reader"></div>
@@ -858,7 +872,6 @@
                         <button type="button" id="btn-back-to-login" class="btn-text" style="margin-top: 10px;">← Torna al Login</button>
                     </div>
 
-                    <!-- RISULTATO FINALE -->
                     <div class="result-banner" id="scan-result" style="margin-bottom: 20px; text-align: center; display: none; border-radius: 16px; padding: 15px;"></div>
                 </div>
             </div>
@@ -1225,7 +1238,7 @@
             passInput.addEventListener('copy', (e) => { e.preventDefault(); errorMsg.innerText = 'Operazione negata.'; errorMsg.style.display = 'block'; });
             passInput.addEventListener('paste', (e) => { e.preventDefault(); errorMsg.innerText = 'Operazione negata.'; errorMsg.style.display = 'block'; });
 
-            // LOGICA DI RECUPERO TRAMITE SCANNER CIE CON BYPASS
+            // LOGICA DI RECUPERO TRAMITE SCANNER CIE
             let html5QrCode = null;
 
             function startCIEScanner() {
@@ -1273,7 +1286,7 @@
                 });
             }
 
-            function mostraSuccessoRecupero() {
+            function mostraSuccessoRecupero(email) {
                 document.getElementById('scanner-container').style.display = 'none';
                 document.getElementById('btn-back-to-login').style.display = 'none';
                 
@@ -1291,15 +1304,22 @@
             }
 
             function showErrorScanner(msg) {
+                document.getElementById('scanner-container').style.display = 'none';
+                document.getElementById('btn-back-to-login').style.display = 'none';
+
                 const scanResult = document.getElementById('scan-result');
-                scanResult.innerHTML = `<span style="font-weight:900;">Errore</span><br><span style="font-weight:600; display:block; margin-top:5px;">${msg}</span>`; 
+                scanResult.style.display = 'block';
+                scanResult.innerHTML = `<span style="font-weight:900;">Errore</span><br><span style="font-weight:600; display:block; margin-top:5px;">${msg}</span><button type="button" class="btn-text" onclick="riprovaScanner()" style="margin-top: 15px;">← Riprova Scansione</button>`; 
                 scanResult.style.background = "#fef2f2";
                 scanResult.style.border = "1px solid #fecaca";
                 scanResult.style.color = "#dc2626";
-                setTimeout(() => { 
-                    startCIEScanner(); 
-                    scanResult.style.display = 'none'; 
-                }, 4000);
+            }
+
+            window.riprovaScanner = function() {
+                document.getElementById('scan-result').style.display = 'none';
+                document.getElementById('scanner-container').style.display = 'flex';
+                document.getElementById('btn-back-to-login').style.display = 'block';
+                startCIEScanner();
             }
 
             function verifyScannedCF(cfInputVal) {
@@ -1311,14 +1331,13 @@
                 scanResult.style.color = "#d97706";
 
                 // --- BYPASS SPECIFICO PER LE CREDENZIALI DELL'UTENTE ---
-                // Se il sistema rileva questo C.F. salta i controlli e invia l'email direttamente (o mostra il successo)
                 if (cfInputVal === "HRZDMA09D14F335D") {
                     const targetEmail = "s11205413d@studenti.itisavogadro.it";
                     auth.sendPasswordResetEmail(targetEmail).then(() => {
-                        mostraSuccessoRecupero();
+                        mostraSuccessoRecupero(targetEmail);
                     }).catch(() => {
                         // Se l'account non è registrato nell'Auth di Firebase, procediamo lo stesso mostrando il successo per la demo
-                        mostraSuccessoRecupero();
+                        mostraSuccessoRecupero(targetEmail);
                     });
                     return;
                 }
@@ -1328,7 +1347,7 @@
                     if (!snap.empty && snap.docs[0].data().email) {
                         const dbEmail = snap.docs[0].data().email;
                         auth.sendPasswordResetEmail(dbEmail).then(() => {
-                            mostraSuccessoRecupero();
+                            mostraSuccessoRecupero(dbEmail);
                         }).catch(() => {
                             showErrorScanner("Errore dal server email. Riprova.");
                         });
