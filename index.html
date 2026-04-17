@@ -222,12 +222,9 @@
         .rules-list { list-style: none; margin-bottom: 24px; padding: 0; }
         .rules-list li { padding: 14px 16px; background: #f8fafc; border-left: 4px solid var(--primary); border-radius: 12px; margin-bottom: 10px; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; display: flex; align-items: center; gap: 12px; transition: transform 0.3s var(--apple-ease), background 0.3s;}
 
-        /* --- STILI RECUPERO PASSWORD (CIE & MANUALE) --- */
-        .recovery-hero { position: relative; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); padding: 60px 20px 40px; display: flex; justify-content: center; align-items: center; overflow: hidden; width: 100%; }
+        /* --- STILI RECUPERO PASSWORD --- */
+        .recovery-hero { position: relative; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 60px 20px 40px; display: flex; justify-content: center; align-items: center; overflow: hidden; width: 100%; }
         .recovery-hero::after { content: ''; position: absolute; width: 150%; height: 150%; background: linear-gradient(rgba(255,255,255,0.4), transparent); transform: rotate(-45deg); top: -50%; pointer-events: none; }
-        
-        .recovery-card-img { width: 100%; max-width: 240px; border-radius: 14px; box-shadow: 0 15px 35px rgba(2, 132, 199, 0.2), 0 5px 15px rgba(0,0,0,0.08); animation: floatCard 5s ease-in-out infinite; position: relative; z-index: 2; border: 1px solid rgba(255,255,255,0.6); }
-        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
         
         .recovery-title { font-size: 1.6rem; font-weight: 900; text-align: center; color: var(--text-dark); letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.2; }
         .recovery-subtitle { text-align: center; font-size: 1rem; font-weight: 500; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; padding: 0 10px; }
@@ -235,13 +232,30 @@
         .result-banner { background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 16px; padding: 20px; text-align: center; color: #065f46; font-size: 0.95rem; font-weight: 600; line-height: 1.5; margin-top: 20px; display: none; animation: fastFadeIn 0.4s var(--apple-ease); }
         .result-banner svg { width: 32px; height: 32px; fill: var(--success); margin-bottom: 10px; }
 
-        /* Stili Modale Scanner CIE 3D */
+        /* Stili Modale Scanner CIE 3D Senza Bordi */
         .cie-card-container { width: 260px; height: 165px; perspective: 1200px; margin: 0 auto; position: relative; z-index: 2; animation: floatCard 5s ease-in-out infinite; }
         .cie-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
         .cie-card-container.flipped .cie-card-inner { transform: rotateY(180deg) scale(1.05); }
-        .cie-card-front, .cie-card-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 14px; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15), inset 0 1px 1px rgba(255, 255, 255, 0.5); background: #fff; display: flex; justify-content: center; align-items: center; overflow: hidden; transform: translateZ(0); }
-        .cie-card-front img, .cie-card-back img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .cie-card-front, .cie-card-back { 
+            position: absolute; 
+            width: 100%; 
+            height: 100%; 
+            backface-visibility: hidden; 
+            -webkit-backface-visibility: hidden; 
+            background: transparent; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            transform: translateZ(0); 
+        }
+        .cie-card-front img, .cie-card-back img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: contain; 
+        }
         .cie-card-back { transform: rotateY(180deg) translateZ(0); }
+        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
 
         /* NUOVO LAYOUT SCANNER: Panoramico e senza sfocature */
         #scanner-container { 
@@ -272,9 +286,8 @@
             height: 100% !important; 
             border-radius: 18px; 
             display: block; 
-            object-fit: cover !important; /* Riempie il rettangolo senza distorsioni */
+            object-fit: cover !important; 
         }
-        /* Riquadro virtuale in puro CSS (solo bordo, nessuna sfocatura) */
         .custom-scanner-frame {
             position: absolute;
             top: 50%;
@@ -284,7 +297,7 @@
             height: 110px;
             border: 3px solid rgba(255, 255, 255, 0.9);
             border-radius: 14px;
-            pointer-events: none; /* Permette il click through se necessario */
+            pointer-events: none; 
             z-index: 10;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             animation: pulseFrame 2s infinite var(--apple-ease);
@@ -461,7 +474,6 @@
 
             .bottom-sheet-body { padding: 25px 20px calc(25px + env(safe-area-inset-bottom, 0px)); }
             .recovery-hero { padding: 40px 20px 25px; }
-            .recovery-card-img { max-width: 200px; }
             .recovery-title { font-size: 1.5rem; }
 
             .modal-logo-wrapper { margin-top: 10px; margin-bottom: 15px; }
@@ -794,58 +806,20 @@
         </div>
     </div>
 
-    <!-- MODALE BOTTOM SHEET PER RECUPERO PASSWORD -->
+    <!-- MODALE BOTTOM SHEET PER RECUPERO PASSWORD (SOLO CIE) -->
     <div id="forgot-sheet-modal" class="modal-overlay bottom-sheet">
         <div class="modal-content">
             <button id="forgot-sheet-close" class="close-btn" style="background: rgba(255,255,255,0.8);">&times;</button>
             
-            <!-- CONTENITORE STUDENTE (CIE / MANUALE) -->
+            <!-- CONTENITORE STUDENTE (CIE) -->
             <div id="student-forgot-form">
-                
-                <!-- VISTA INSERIMENTO MANUALE (DEFAULT) -->
-                <div id="student-forgot-manual-view">
-                    <div class="recovery-hero">
-                        <img src="https://i.ibb.co/gb5LbmYR/TESSERA-SANITARIA.png" alt="Tessera Sanitaria" class="recovery-card-img">
-                    </div>
-
-                    <div class="bottom-sheet-body">
-                        <h2 class="recovery-title">Verifica Identità</h2>
-                        <p class="recovery-subtitle">Abbiamo bisogno del tuo <strong>Codice Fiscale</strong> per assicurarci che sia davvero tu a richiedere l'accesso.</p>
-                        
-                        <div class="input-group">
-                            <div class="custom-select" id="forgot-cognome-select">
-                                <div class="custom-select-trigger">
-                                    <span id="forgot-cognome-display">Seleziona lo studente</span>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width: 16px; color: var(--text-light);"><polyline points="6 9 12 15 18 9"></polyline></svg>
-                                </div>
-                                <div class="custom-options" id="forgot-cognome-options"></div>
-                            </div>
-                        </div>
-                        
-                        <div class="input-group" style="margin-bottom: 25px;">
-                            <input type="text" id="cf-input" class="apple-input" placeholder="INSERISCI CODICE FISCALE" style="text-transform: uppercase; font-family: -apple-system, BlinkMacSystemFont, 'Inter', sans-serif; letter-spacing: 1px; font-weight: 800; text-align: center;" maxlength="16">
-                            <div class="error-msg" id="forgot-error">Codice Fiscale non valido o non associato.</div>
-                        </div>
-
-                        <button type="button" id="btn-verify-student" class="btn-gradient">VERIFICA ORA</button>
-                        
-                        <!-- BOTTONE OPZIONE ALTERNATIVA -->
-                        <button type="button" id="btn-open-scan" class="btn-social" style="margin-top: 12px; border-color: var(--primary-light); color: var(--primary); background: #f0f9ff; height: 52px; justify-content: center; gap: 8px;">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="width: 20px;"><path d="M4 7V4h3m10 0h3v3M4 17v3h3m10 0h3v-3M9 12h6M12 9v6"/></svg>
-                            Verifica in un altro modo
-                        </button>
-                        
-                        <div class="result-banner" id="forgot-result"></div>
-                    </div>
-                </div>
-
                 <!-- VISTA SCANSIONE CIE -->
-                <div id="student-forgot-scan-view" style="display: none;">
-                    <div class="recovery-hero" style="background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);">
+                <div id="student-forgot-scan-view">
+                    <div class="recovery-hero">
                         <div class="cie-card-container" id="cie-anim-container">
                             <div class="cie-card-inner">
-                                <div class="cie-card-front"><img src="https://i.ibb.co/2w05z7s/CIE-FRONTE.png" alt="CIE Fronte"></div>
-                                <div class="cie-card-back"><img src="https://i.ibb.co/YTF16fQQ/CIE-RETRO.png" alt="CIE Retro"></div>
+                                <div class="cie-card-front"><img src="https://i.ibb.co/WNC8krrF/CIE-FRONTE.png" alt="CIE Fronte"></div>
+                                <div class="cie-card-back"><img src="https://i.ibb.co/gbyjtH22/CIE-RETRO.png" alt="CIE Retro"></div>
                             </div>
                         </div>
                     </div>
@@ -860,8 +834,6 @@
                         </div>
                         
                         <div class="result-banner" id="scan-result" style="margin-bottom: 20px; text-align: center; display: none; border-radius: 16px; padding: 15px;"></div>
-                        
-                        <button type="button" id="btn-back-to-manual" class="btn-text" style="margin-top: 5px;">← Torna all'inserimento manuale</button>
                     </div>
                 </div>
             </div>
@@ -1033,7 +1005,7 @@
             document.querySelectorAll('.modal-overlay').forEach(modal => { modalObserver.observe(modal, { attributes: true, attributeFilter: ['class'] }); });
 
             const finalHoursValue = "113.30";
-            let selectedRole = 'studente'; let selectedUserValue = ""; let selectedUserEmail = ""; let selectedForgotUser = null;
+            let selectedRole = 'studente'; let selectedUserValue = ""; let selectedUserEmail = ""; 
             const MAX_ATTEMPTS = 3; const LOCKOUT_DURATION = 60000; let lockoutTimerInterval;
 
             const submitBtn = document.getElementById('login-submit');
@@ -1065,14 +1037,9 @@
             
             document.getElementById('forgot-sheet-close').addEventListener('click', () => {
                 forgotSheetModal.classList.remove('active');
-                document.getElementById('cf-input').value = '';
-                document.getElementById('forgot-result').style.display = 'none';
-                document.getElementById('btn-verify-student').style.display = 'block';
-                resetDropdownDisplay('forgot-cognome-display', 'Seleziona lo studente');
-                
                 stopScannerSafe();
-                document.getElementById('student-forgot-scan-view').style.display = 'none';
-                document.getElementById('student-forgot-manual-view').style.display = 'block';
+                document.getElementById('cie-anim-container').classList.remove('flipped');
+                document.getElementById('scan-result').style.display = 'none';
             });
 
             function checkLockoutState() {
@@ -1100,7 +1067,6 @@
 
             const usernameSelect = document.getElementById('username-select');
             const hiddenUsernameInput = document.getElementById('hidden-username');
-            const forgotCognomeSelect = document.getElementById('forgot-cognome-select');
             
             function populateUserDropdown(role) {
                 const optionsContainer = document.getElementById('username-options');
@@ -1116,35 +1082,21 @@
                 resetDropdownDisplay('username-display', 'Seleziona Utente');
             }
 
-            function populateForgotDropdown() {
-                const optionsContainer = document.getElementById('forgot-cognome-options');
-                optionsContainer.innerHTML = '<div class="custom-option" style="color:var(--text-light); text-align:center;">Caricamento...</div>';
-                if (typeof db !== 'undefined') {
-                    db.collection("studenti").orderBy("nome", "asc").get().then((querySnapshot) => {
-                        optionsContainer.innerHTML = ''; 
-                        querySnapshot.forEach((doc) => creaOpzioneDropdown(doc.data().nome, doc.data().cf, optionsContainer, 'forgot-cognome'));
-                    }).catch(() => { optionsContainer.innerHTML = '<div class="custom-option" style="color:var(--danger);">Errore Server</div>'; });
-                }
-                resetDropdownDisplay('forgot-cognome-display', 'Seleziona lo studente');
-            }
-
             function creaOpzioneDropdown(nome, datoExtra, container, tipo) {
                 const option = document.createElement('div');
                 option.className = 'custom-option'; option.textContent = nome;
                 option.addEventListener('click', function(e) {
                     e.stopPropagation(); document.getElementById(`${tipo}-display`).textContent = nome; document.getElementById(`${tipo}-display`).parentElement.classList.add('selected');
                     if(tipo === 'username') { selectedUserValue = nome; selectedUserEmail = datoExtra; hiddenUsernameInput.value = nome; usernameSelect.classList.remove('open'); errorMsg.style.display = 'none'; }
-                    else if (tipo === 'forgot-cognome') { selectedForgotUser = { nome: nome, cf: datoExtra }; forgotCognomeSelect.classList.remove('open'); document.getElementById('forgot-error').style.display = 'none'; }
                 }); container.appendChild(option);
             }
 
             function resetDropdownDisplay(id, testo) {
                 document.getElementById(id).textContent = testo; document.getElementById(id).parentElement.classList.remove('selected');
                 if(id === 'username-display') { selectedUserValue = ""; selectedUserEmail = ""; hiddenUsernameInput.value = ""; }
-                if(id === 'forgot-cognome-display') { selectedForgotUser = null; }
             }
 
-            populateUserDropdown('studente'); populateForgotDropdown();
+            populateUserDropdown('studente'); 
 
             document.querySelectorAll('.custom-select-trigger').forEach(trigger => {
                 trigger.addEventListener('click', function(e) { e.stopPropagation(); const parent = this.parentElement; document.querySelectorAll('.custom-select').forEach(s => { if(s !== parent) s.classList.remove('open'); }); parent.classList.toggle('open'); });
@@ -1166,17 +1118,24 @@
             document.querySelectorAll('.btn-back-login').forEach(btn => { btn.addEventListener('click', () => { rulesView.style.display = 'none'; loginView.style.display = 'block'; hidModal.classList.remove('active'); }); });
 
             function setupForgotView() {
-                document.getElementById('forgot-error').style.display = 'none'; 
-                document.getElementById('forgot-result').style.display = 'none';
-                document.getElementById('btn-verify-student').style.display = 'block';
-
-                document.getElementById('student-forgot-manual-view').style.display = 'block';
-                document.getElementById('student-forgot-scan-view').style.display = 'none';
                 stopScannerSafe();
+                const scanResult = document.getElementById('scan-result');
+                if(scanResult) scanResult.style.display = 'none';
 
                 if(selectedRole === 'studente') { 
                     document.getElementById('student-forgot-form').style.display = 'block'; 
                     document.getElementById('teacher-forgot-msg').style.display = 'none'; 
+                    
+                    const cieAnimContainer = document.getElementById('cie-anim-container');
+                    cieAnimContainer.classList.remove('flipped');
+                    
+                    setTimeout(() => {
+                        if(document.getElementById('student-forgot-form').style.display === 'block') {
+                            cieAnimContainer.classList.add('flipped');
+                        }
+                    }, 2000);
+
+                    startCIEScanner();
                 } else { 
                     document.getElementById('student-forgot-form').style.display = 'none'; 
                     document.getElementById('teacher-forgot-msg').style.display = 'block'; 
@@ -1196,64 +1155,13 @@
             passInput.addEventListener('copy', (e) => { e.preventDefault(); errorMsg.innerText = 'Operazione negata.'; errorMsg.style.display = 'block'; });
             passInput.addEventListener('paste', (e) => { e.preventDefault(); errorMsg.innerText = 'Operazione negata.'; errorMsg.style.display = 'block'; });
 
-            // LOGICA DI RECUPERO MANUALE
-            document.getElementById('btn-verify-student').addEventListener('click', () => {
-                if (document.activeElement) document.activeElement.blur();
-                const cfInputVal = document.getElementById('cf-input').value.trim().toUpperCase();
-                const btnReset = document.getElementById('btn-verify-student');
-                const forgotErrorObj = document.getElementById('forgot-error');
-                const forgotResult = document.getElementById('forgot-result');
-                
-                if(!selectedForgotUser || !cfInputVal) { forgotErrorObj.innerText = "Seleziona uno studente e compila il campo."; forgotErrorObj.style.display = 'block'; return; }
-                if(selectedForgotUser.cf === cfInputVal) {
-                    forgotErrorObj.style.display = 'none'; btnReset.innerText = "ATTENDERE..."; btnReset.disabled = true;
-                    db.collection("studenti").where("cf", "==", cfInputVal).get().then((snap) => {
-                        if (!snap.empty && snap.docs[0].data().email) {
-                            auth.sendPasswordResetEmail(snap.docs[0].data().email).then(() => { 
-                                btnReset.style.display = 'none';
-                                forgotResult.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"/></svg><br>Tutto confermato.<br><span style="font-weight:500; font-size:0.85rem; color:#0f766e;">Abbiamo inviato le istruzioni all'indirizzo email associato al tuo account.</span>`; 
-                                forgotResult.style.display = 'block'; btnReset.innerText = "VERIFICA ORA"; btnReset.disabled = false; 
-                            }).catch(() => { forgotErrorObj.innerText = "Impossibile contattare il server email."; forgotErrorObj.style.display = 'block'; btnReset.innerText = "RIPROVA"; btnReset.disabled = false; });
-                        } else { forgotErrorObj.innerText = "Account non trovato o email assente."; forgotErrorObj.style.display = 'block'; btnReset.disabled = false; btnReset.innerText = "VERIFICA ORA"; }
-                    });
-                } else { forgotResult.style.display = 'none'; forgotErrorObj.innerText = "Codice Fiscale non associato. Riprova."; forgotErrorObj.style.display = 'block'; forgotErrorObj.style.animation = 'none'; void forgotErrorObj.offsetWidth; forgotErrorObj.style.animation = 'shake 0.4s'; }
-            });
-
             // LOGICA DI RECUPERO TRAMITE SCANNER CIE
-            const manualView = document.getElementById('student-forgot-manual-view');
-            const scanView = document.getElementById('student-forgot-scan-view');
-            const btnOpenScan = document.getElementById('btn-open-scan');
-            const btnBackToManual = document.getElementById('btn-back-to-manual');
-            const cieAnimContainer = document.getElementById('cie-anim-container');
             let html5QrCode = null;
-
-            btnOpenScan.addEventListener('click', () => {
-                manualView.style.display = 'none';
-                scanView.style.display = 'block';
-                document.getElementById('scan-result').style.display = 'none';
-                
-                cieAnimContainer.classList.remove('flipped');
-                setTimeout(() => {
-                    if(scanView.style.display === 'block') {
-                        cieAnimContainer.classList.add('flipped');
-                    }
-                }, 2000);
-
-                startCIEScanner();
-            });
-
-            btnBackToManual.addEventListener('click', () => {
-                stopScannerSafe();
-                scanView.style.display = 'none';
-                manualView.style.display = 'block';
-            });
 
             function startCIEScanner() {
                 const readerElement = document.getElementById('reader');
                 readerElement.innerHTML = '<div style="color:white; padding: 40px 20px; text-align:center; font-weight:600; display:flex; align-items:center; height:100%; justify-content:center;">Richiesta accesso fotocamera...</div>';
                 
-                // Rimosso qrbox per evitare l'oscuramento invasivo.
-                // Usiamo l'intero video (adattato via CSS) per scansionare.
                 const config = {
                     fps: 15
                 };
@@ -1284,7 +1192,7 @@
                         // Silenzioso
                     }
                 ).catch((err) => {
-                    readerElement.innerHTML = `<div style="color:var(--danger); padding: 40px 20px; text-align:center; font-weight:600; background:#fff; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">Accesso fotocamera negato.<br><span style="font-size:0.8rem; color:#64748b; font-weight:500; margin-top:5px;">Controlla i permessi o usa l'inserimento manuale.</span></div>`;
+                    readerElement.innerHTML = `<div style="color:var(--danger); padding: 40px 20px; text-align:center; font-weight:600; background:#fff; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">Accesso fotocamera negato.<br><span style="font-size:0.8rem; color:#64748b; font-weight:500; margin-top:5px;">Controlla i permessi del tuo browser.</span></div>`;
                 });
             }
 
