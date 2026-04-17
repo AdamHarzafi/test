@@ -222,83 +222,63 @@
         .rules-list { list-style: none; margin-bottom: 24px; padding: 0; }
         .rules-list li { padding: 14px 16px; background: #f8fafc; border-left: 4px solid var(--primary); border-radius: 12px; margin-bottom: 10px; font-weight: 700; color: var(--text-dark); font-size: 0.9rem; display: flex; align-items: center; gap: 12px; transition: transform 0.3s var(--apple-ease), background 0.3s;}
 
-        /* --- STILI RECUPERO PASSWORD --- */
-        .recovery-hero { position: relative; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 60px 20px 40px; display: flex; justify-content: center; align-items: center; overflow: hidden; width: 100%; }
+        /* --- STILI RECUPERO PASSWORD (SOLO CIE) --- */
+        .recovery-hero { position: relative; background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%); padding: 40px 20px 20px; display: flex; flex-direction: column; justify-content: center; align-items: center; overflow: hidden; width: 100%; border-radius: 36px 36px 0 0; }
         .recovery-hero::after { content: ''; position: absolute; width: 150%; height: 150%; background: linear-gradient(rgba(255,255,255,0.4), transparent); transform: rotate(-45deg); top: -50%; pointer-events: none; }
         
-        .recovery-title { font-size: 1.6rem; font-weight: 900; text-align: center; color: var(--text-dark); letter-spacing: -0.5px; margin-bottom: 8px; line-height: 1.2; }
-        .recovery-subtitle { text-align: center; font-size: 1rem; font-weight: 500; color: var(--text-gray); margin-bottom: 25px; line-height: 1.5; padding: 0 10px; }
+        .recovery-title { font-size: 1.8rem; font-weight: 900; text-align: center; color: var(--text-dark); letter-spacing: -0.5px; margin-bottom: 25px; line-height: 1.2; position: relative; z-index: 2; }
+        .recovery-subtitle { text-align: center; font-size: 1.05rem; font-weight: 500; color: var(--text-gray); margin-top: 25px; margin-bottom: 8px; line-height: 1.5; padding: 0 10px; position: relative; z-index: 2; }
         
         .result-banner { background: #ecfdf5; border: 1px solid #a7f3d0; border-radius: 16px; padding: 20px; text-align: center; color: #065f46; font-size: 0.95rem; font-weight: 600; line-height: 1.5; margin-top: 20px; display: none; animation: fastFadeIn 0.4s var(--apple-ease); }
         .result-banner svg { width: 32px; height: 32px; fill: var(--success); margin-bottom: 10px; }
 
-        /* Stili Modale Scanner CIE 3D Senza Bordi */
-        .cie-card-container { width: 260px; height: 165px; perspective: 1200px; margin: 0 auto; position: relative; z-index: 2; animation: floatCard 5s ease-in-out infinite; }
-        .cie-card-inner { position: relative; width: 100%; height: 100%; text-align: center; transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); transform-style: preserve-3d; }
+        /* Stili Modale Scanner CIE 3D Ottimizzata per Mobile (Accelerazione Hardware) */
+        .cie-card-container { 
+            width: 260px; height: 165px; perspective: 1200px; margin: 0 auto; position: relative; z-index: 2; 
+            animation: floatCard 5s ease-in-out infinite; 
+            will-change: transform;
+        }
+        .cie-card-inner { 
+            position: relative; width: 100%; height: 100%; text-align: center; 
+            transition: transform 1.2s cubic-bezier(0.34, 1.56, 0.64, 1); 
+            transform-style: preserve-3d; 
+            will-change: transform;
+        }
         .cie-card-container.flipped .cie-card-inner { transform: rotateY(180deg) scale(1.05); }
         
         .cie-card-front, .cie-card-back { 
-            position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            backface-visibility: hidden; 
-            -webkit-backface-visibility: hidden; 
-            background: transparent; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            position: absolute; width: 100%; height: 100%; 
+            backface-visibility: hidden; -webkit-backface-visibility: hidden; 
+            background: transparent; display: flex; justify-content: center; align-items: center; 
             transform: translateZ(0); 
+            will-change: transform;
         }
-        .cie-card-front img, .cie-card-back img { 
-            width: 100%; 
-            height: 100%; 
-            object-fit: contain; 
-        }
+        .cie-card-front img, .cie-card-back img { width: 100%; height: 100%; object-fit: contain; }
         .cie-card-back { transform: rotateY(180deg) translateZ(0); }
-        @keyframes floatCard { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+        
+        @keyframes floatCard { 
+            0%, 100% { transform: translate3d(0, 0, 0); } 
+            50% { transform: translate3d(0, -8px, 0); } 
+        }
 
-        /* NUOVO LAYOUT SCANNER: Panoramico e senza sfocature */
+        /* LAYOUT SCANNER */
         #scanner-container { 
-            width: 100%; 
-            height: 200px; 
-            border-radius: 20px; 
-            overflow: hidden; 
-            border: 2px solid var(--border-color); 
-            position: relative; 
-            background: #000; 
-            margin-bottom: 20px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            width: 100%; height: 200px; border-radius: 20px; overflow: hidden; 
+            border: 2px solid var(--border-color); position: relative; background: #000; 
+            margin-bottom: 20px; display: flex; align-items: center; justify-content: center; 
         }
         #reader { 
-            width: 100%; 
-            height: 100%; 
-            position: relative; 
-            padding: 0 !important; 
-            border: none !important; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
+            width: 100%; height: 100%; position: relative; padding: 0 !important; 
+            border: none !important; display: flex; align-items: center; justify-content: center; 
         }
         #reader video { 
-            width: 100% !important; 
-            height: 100% !important; 
-            border-radius: 18px; 
-            display: block; 
-            object-fit: cover !important; 
+            width: 100% !important; height: 100% !important; border-radius: 18px; 
+            display: block; object-fit: cover !important; 
         }
         .custom-scanner-frame {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 85%;
-            height: 110px;
-            border: 3px solid rgba(255, 255, 255, 0.9);
-            border-radius: 14px;
-            pointer-events: none; 
-            z-index: 10;
+            position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            width: 85%; height: 110px; border: 3px solid rgba(255, 255, 255, 0.9);
+            border-radius: 14px; pointer-events: none; z-index: 10;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
             animation: pulseFrame 2s infinite var(--apple-ease);
         }
@@ -410,7 +390,7 @@
             .bento-card:hover { transform: translateY(-8px) scale(1.01); box-shadow: 0 25px 60px rgba(2, 132, 199, 0.12); border-color: rgba(2, 132, 199, 0.15);}
             .bento-card.large:hover { box-shadow: 0 30px 60px rgba(15, 23, 42, 0.35); }
             .close-btn:hover { background: rgba(0,0,0,0.1); transform: scale(1.1); }
-            .login-rules-banner:hover { background: #e0f2fe; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(2,132,199,0.1); }
+            .login-rules-banner:hover { background: #fef3c7 !important; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(217, 119, 6, 0.1); }
             .custom-option:hover { background: #f0f9ff; color: var(--primary); }
             .toggle-password-btn:hover { color: var(--primary); }
             .btn-social:hover { background: #f9fafb; border-color: #d1d5db; transform: translateY(-2px) scale(1.01); box-shadow: 0 6px 15px rgba(0,0,0,0.05); }
@@ -473,7 +453,7 @@
             .close-btn { top: calc(15px + env(safe-area-inset-top, 0px)); right: 15px; width: 40px; height: 40px; font-size: 22px; }
 
             .bottom-sheet-body { padding: 25px 20px calc(25px + env(safe-area-inset-bottom, 0px)); }
-            .recovery-hero { padding: 40px 20px 25px; }
+            .recovery-hero { padding: 40px 20px 20px; }
             .recovery-title { font-size: 1.5rem; }
 
             .modal-logo-wrapper { margin-top: 10px; margin-bottom: 15px; }
@@ -811,30 +791,62 @@
         <div class="modal-content">
             <button id="forgot-sheet-close" class="close-btn" style="background: rgba(255,255,255,0.8);">&times;</button>
             
-            <!-- CONTENITORE STUDENTE (CIE) -->
             <div id="student-forgot-form">
-                <!-- VISTA SCANSIONE CIE -->
-                <div id="student-forgot-scan-view">
-                    <div class="recovery-hero">
-                        <div class="cie-card-container" id="cie-anim-container">
-                            <div class="cie-card-inner">
-                                <div class="cie-card-front"><img src="https://i.ibb.co/WNC8krrF/CIE-FRONTE.png" alt="CIE Fronte"></div>
-                                <div class="cie-card-back"><img src="https://i.ibb.co/gbyjtH22/CIE-RETRO.png" alt="CIE Retro"></div>
-                            </div>
+                
+                <!-- HEADER / ANIMAZIONE CARTE -->
+                <div class="recovery-hero" style="padding-bottom: 10px; padding-top: 30px;">
+                    <!-- TITLE ABOVE -->
+                    <h2 class="recovery-title" style="font-size: 1.6rem; margin-bottom: 25px;">Verifica Identità</h2>
+                    
+                    <div class="cie-card-container" id="cie-anim-container">
+                        <div class="cie-card-inner">
+                            <div class="cie-card-front"><img src="https://i.ibb.co/WNC8krrF/CIE-FRONTE.png" alt="CIE Fronte"></div>
+                            <div class="cie-card-back"><img src="https://i.ibb.co/gbyjtH22/CIE-RETRO.png" alt="CIE Retro"></div>
                         </div>
                     </div>
+                    
+                    <!-- SUBTITLE BELOW -->
+                    <p class="recovery-subtitle" style="margin-top: 25px; margin-bottom: 5px;">Inquadra il <strong>codice a barre</strong> presente sul retro della tua Carta d'Identità Elettronica.</p>
+                    <p style="font-size: 0.75rem; color: var(--text-light); text-align: center; font-weight: 600; margin-bottom: 0;">Le immagini potrebbero essere soggette a copyright.</p>
+                </div>
 
-                    <div class="bottom-sheet-body">
-                        <h2 class="recovery-title">Verifica Identità</h2>
-                        <p class="recovery-subtitle" style="margin-bottom: 15px;">Inquadra il <strong>codice a barre</strong> presente sul retro della tua Carta d'Identità Elettronica.</p>
-                        
+                <div class="bottom-sheet-body" style="padding-top: 15px;">
+                    
+                    <!-- BANNER AVVISO -->
+                    <div class="login-rules-banner" id="btn-cie-avviso" style="background: #fffbeb; border-color: #fde68a; color: #d97706; padding: 12px 16px; margin-bottom: 25px; cursor: pointer; display: flex; justify-content: space-between; align-items: center; white-space: normal;">
+                        <div style="display: flex; flex-direction: column; text-align: left; gap: 4px; overflow: hidden; padding-right: 15px;">
+                            <strong style="font-size: 0.95rem; font-weight: 900;">AVVISO</strong>
+                            <span style="font-size: 0.85rem; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 250px;">A partire dal 3 agosto 2026...</span>
+                        </div>
+                        <svg viewBox="0 0 24 24" fill="currentColor" style="width: 20px; flex-shrink: 0;"><path d="M8.59,16.58L13.17,12L8.59,7.41L10,6L16,12L10,18L8.59,16.58Z"/></svg>
+                    </div>
+
+                    <!-- STEP 1: SCANSIONE -->
+                    <div id="student-forgot-scan-view">
                         <div id="scanner-container">
                             <div id="reader"></div>
                             <div class="custom-scanner-frame"></div>
                         </div>
-                        
-                        <div class="result-banner" id="scan-result" style="margin-bottom: 20px; text-align: center; display: none; border-radius: 16px; padding: 15px;"></div>
+
+                        <button type="button" id="btn-back-to-login" class="btn-text" style="margin-top: 10px;">← Torna al Login</button>
                     </div>
+
+                    <!-- STEP 2: SICUREZZA AGGIUNTIVA -->
+                    <div id="student-forgot-security-view" style="display: none;">
+                        <h2 class="recovery-title" style="font-size: 1.5rem; color: var(--primary);">Controllo di Sicurezza</h2>
+                        <p class="recovery-subtitle" style="margin-bottom: 20px;">Codice Fiscale rilevato. Per inviare l'email di recupero, conferma l'indirizzo email associato al tuo profilo.</p>
+                        
+                        <div class="input-group">
+                            <input type="email" id="security-email-input" class="apple-input" placeholder="La tua email scolastica..." style="text-align: center;">
+                            <div class="error-msg" id="security-email-error">Email non corrispondente o non valida.</div>
+                        </div>
+                        
+                        <button type="button" id="btn-confirm-security" class="btn-gradient">CONFERMA IDENTITÀ</button>
+                        <button type="button" id="btn-back-to-scan" class="btn-text">← Annulla e riprova</button>
+                    </div>
+
+                    <!-- RISULTATO FINALE -->
+                    <div class="result-banner" id="scan-result" style="margin-bottom: 20px; text-align: center; display: none; border-radius: 16px; padding: 15px;"></div>
                 </div>
             </div>
 
@@ -851,6 +863,22 @@
                     <a href="mailto:s11205413d@studenti.itisavogadro.it" class="btn-premium" style="width: 100%; height: 52px; font-size: 1.05rem; text-decoration: none;">Richiedi Assistenza</a>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Modale Avviso CIE -->
+    <div id="avviso-cie-modal" class="modal-overlay">
+        <div class="modal-content" style="max-width: 500px; padding: 35px 30px 30px;">
+            <button class="close-btn" id="close-avviso-modal">&times;</button>
+            <div style="background: #fffbeb; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; color: #d97706;">
+                <svg viewBox="0 0 24 24" style="width: 30px; fill: currentColor;"><path d="M13,14H11V10H13M13,18H11V16H13M1,21H23L12,2L1,21Z"/></svg>
+            </div>
+            <h2 style="font-size: 1.5rem; color: var(--text-dark); text-align: center; margin-bottom: 20px; font-weight: 900;">Avviso Importante</h2>
+            <div style="font-size: 0.95rem; font-weight: 500; color: var(--text-gray); line-height: 1.6; text-align: justify; margin-bottom: 30px;">
+                <p style="margin-bottom: 15px;">A partire dal 3 agosto 2026 la Carta d'Identità in formato cartaceo non sarà più considerata valida, né ai fini dell’espatrio, né come documento di riconoscimento sul territorio nazionale, come disposto dall'art. 5 del regolamento (UE) 2019/1157 del Parlamento Europeo del 20 giugno 2019 sul "Rafforzamento della sicurezza delle carte d'identità dei cittadini dell'Unione e dei titoli di soggiorno rilasciati ai cittadini dell'Unione e ai loro familiari che esercitano il diritto di libera circolazione."</p>
+                <p>A prescindere dalla data di scadenza riportata sul documento, la carta d’identità cartacea sarà quindi inutilizzabile e dovrà essere sostituita con la carta d’identità elettronica (CIE).</p>
+            </div>
+            <button type="button" id="btn-close-avviso-full" class="btn-gradient" style="width: 100%; height: 52px; font-size: 1rem;">← Torna indietro</button>
         </div>
     </div>
 
@@ -1119,11 +1147,16 @@
 
             function setupForgotView() {
                 stopScannerSafe();
-                const scanResult = document.getElementById('scan-result');
-                if(scanResult) scanResult.style.display = 'none';
+                
+                // Resetto le view
+                document.getElementById('student-forgot-security-view').style.display = 'none';
+                document.getElementById('scan-result').style.display = 'none';
+                document.getElementById('security-email-input').value = '';
+                document.getElementById('security-email-error').style.display = 'none';
 
                 if(selectedRole === 'studente') { 
                     document.getElementById('student-forgot-form').style.display = 'block'; 
+                    document.getElementById('student-forgot-scan-view').style.display = 'block';
                     document.getElementById('teacher-forgot-msg').style.display = 'none'; 
                     
                     const cieAnimContainer = document.getElementById('cie-anim-container');
@@ -1142,6 +1175,28 @@
                 }
             }
 
+            // GESTIONE BANNER CIE (Apertura Modale e Chiusura)
+            document.getElementById('btn-cie-avviso').addEventListener('click', () => {
+                document.getElementById('avviso-cie-modal').classList.add('active');
+            });
+            document.getElementById('close-avviso-modal').addEventListener('click', () => {
+                document.getElementById('avviso-cie-modal').classList.remove('active');
+            });
+            document.getElementById('btn-close-avviso-full').addEventListener('click', () => {
+                document.getElementById('avviso-cie-modal').classList.remove('active');
+            });
+
+            // Ritorno al login da modale forgot password
+            document.getElementById('btn-back-to-login').addEventListener('click', () => {
+                stopScannerSafe();
+                document.getElementById('forgot-sheet-modal').classList.remove('active');
+                document.getElementById('login-modal').classList.add('active');
+            });
+            window.chiudiModaleRecuperoEAproLogin = function() {
+                document.getElementById('forgot-sheet-modal').classList.remove('active');
+                document.getElementById('login-modal').classList.add('active');
+            }
+
             const togglePasswordBtn = document.getElementById('toggle-password');
             const eyeIcon = document.getElementById('eye-icon');
             const eyeSlashIcon = document.getElementById('eye-slash-icon');
@@ -1155,17 +1210,15 @@
             passInput.addEventListener('copy', (e) => { e.preventDefault(); errorMsg.innerText = 'Operazione negata.'; errorMsg.style.display = 'block'; });
             passInput.addEventListener('paste', (e) => { e.preventDefault(); errorMsg.innerText = 'Operazione negata.'; errorMsg.style.display = 'block'; });
 
-            // LOGICA DI RECUPERO TRAMITE SCANNER CIE
+            // LOGICA DI RECUPERO TRAMITE SCANNER CIE E FATTORE DI SICUREZZA 2FA
             let html5QrCode = null;
+            let currentlyScannedCF = "";
 
             function startCIEScanner() {
                 const readerElement = document.getElementById('reader');
                 readerElement.innerHTML = '<div style="color:white; padding: 40px 20px; text-align:center; font-weight:600; display:flex; align-items:center; height:100%; justify-content:center;">Richiesta accesso fotocamera...</div>';
                 
-                const config = {
-                    fps: 15
-                };
-
+                const config = { fps: 15 };
                 html5QrCode = new Html5Qrcode("reader");
                 html5QrCode.start(
                     { facingMode: "environment" },
@@ -1175,24 +1228,24 @@
                         const cfMatchFallback = decodedText.match(/[A-Z0-9]{16}/i); 
                         
                         let extractedCF = null;
-
                         if (cfRegex.test(decodedText)) { extractedCF = decodedText; } 
                         else if (cfMatchFallback) { extractedCF = cfMatchFallback[0]; }
 
                         if (extractedCF && extractedCF.length === 16) {
                             const scannedCF = extractedCF.toUpperCase();
+                            currentlyScannedCF = scannedCF;
                             stopScannerSafe().then(() => {
-                                verifyScannedCF(scannedCF);
+                                showSecurityStep();
                             }).catch(() => {
-                                verifyScannedCF(scannedCF);
+                                showSecurityStep();
                             });
                         }
                     },
                     (errorMessage) => { 
-                        // Silenzioso
+                        // Silenzioso in caso di scanning continuo non a buon fine
                     }
                 ).catch((err) => {
-                    readerElement.innerHTML = `<div style="color:var(--danger); padding: 40px 20px; text-align:center; font-weight:600; background:#fff; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">Accesso fotocamera negato.<br><span style="font-size:0.8rem; color:#64748b; font-weight:500; margin-top:5px;">Controlla i permessi del tuo browser.</span></div>`;
+                    readerElement.innerHTML = `<div style="color:var(--danger); padding: 40px 20px; text-align:center; font-weight:600; background:#fff; height:100%; display:flex; align-items:center; justify-content:center; flex-direction:column;">Accesso fotocamera negato.<br><span style="font-size:0.8rem; color:#64748b; font-weight:500; margin-top:5px;">Controlla i permessi del tuo browser o sistema.</span></div>`;
                 });
             }
 
@@ -1203,49 +1256,98 @@
                             html5QrCode.clear();
                             resolve();
                         }).catch((e) => { resolve(); });
-                    } else {
-                        resolve();
-                    }
+                    } else { resolve(); }
                 });
             }
 
-            function verifyScannedCF(cfInputVal) {
-                const scanResult = document.getElementById('scan-result');
-                scanResult.style.display = 'block';
-                scanResult.innerHTML = `<div class="btn-loader" style="color: #d97706; width:100%; justify-content:center;"><div class="btn-spinner" style="border-top-color: #d97706; border-color: rgba(217,119,6,0.2);"></div><span style="font-weight:800; margin-left:8px;">Verifica in corso...</span></div>`;
-                scanResult.style.background = "#fffbeb";
-                scanResult.style.border = "1px solid #fde68a";
-                scanResult.style.color = "#d97706";
+            function showSecurityStep() {
+                document.getElementById('student-forgot-scan-view').style.display = 'none';
+                document.getElementById('student-forgot-security-view').style.display = 'block';
+                document.getElementById('scan-result').style.display = 'none';
+                document.getElementById('security-email-input').value = '';
+                document.getElementById('security-email-error').style.display = 'none';
+            }
 
-                db.collection("studenti").where("cf", "==", cfInputVal).get().then((snap) => {
+            document.getElementById('btn-back-to-scan').addEventListener('click', () => {
+                document.getElementById('student-forgot-security-view').style.display = 'none';
+                document.getElementById('student-forgot-scan-view').style.display = 'block';
+                document.getElementById('scan-result').style.display = 'none';
+                startCIEScanner();
+            });
+
+            document.getElementById('btn-confirm-security').addEventListener('click', () => {
+                const emailInput = document.getElementById('security-email-input').value.trim().toLowerCase();
+                const errorObj = document.getElementById('security-email-error');
+                const btn = document.getElementById('btn-confirm-security');
+                
+                if (!emailInput) {
+                    errorObj.innerText = "Inserisci la tua email scolastica.";
+                    errorObj.style.display = 'block';
+                    return;
+                }
+
+                errorObj.style.display = 'none';
+                btn.innerText = "VERIFICA IN CORSO...";
+                btn.disabled = true;
+
+                // Anti-spam Rate Limiting
+                let resetAttempts = parseInt(localStorage.getItem('pcto_reset_attempts') || '0');
+                const resetLockout = localStorage.getItem('pcto_reset_lockout_until');
+                if (resetLockout && Date.now() < parseInt(resetLockout)) {
+                    errorObj.innerText = "Troppi tentativi. Riprova più tardi.";
+                    errorObj.style.display = 'block';
+                    btn.innerText = "CONFERMA IDENTITÀ";
+                    btn.disabled = false;
+                    return;
+                }
+
+                db.collection("studenti").where("cf", "==", currentlyScannedCF).get().then((snap) => {
                     if (!snap.empty && snap.docs[0].data().email) {
-                        auth.sendPasswordResetEmail(snap.docs[0].data().email).then(() => { 
-                            scanResult.innerHTML = `<svg viewBox="0 0 24 24" style="width: 36px; height: 36px; fill: var(--success); margin-bottom: 10px; display: block; margin: 0 auto 10px;"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"/></svg><span style="font-weight:900; font-size:1.15rem;">Identità Confermata</span><br><span style="font-weight:600; font-size:0.95rem; display:block; margin-top:5px;">Abbiamo inviato le istruzioni all'email di ${snap.docs[0].data().nome}.</span>`; 
-                            scanResult.style.background = "#ecfdf5";
-                            scanResult.style.border = "1px solid #a7f3d0";
-                            scanResult.style.color = "#065f46";
-                        }).catch(() => { 
-                            scanResult.innerHTML = `<span style="font-weight:900;">Errore di Rete</span><br><span style="font-weight:600; display:block; margin-top:5px;">Impossibile contattare il server email. Riprova tra poco.</span>`; 
-                            scanResult.style.background = "#fef2f2";
-                            scanResult.style.border = "1px solid #fecaca";
-                            scanResult.style.color = "#dc2626";
-                            setTimeout(() => { startCIEScanner(); scanResult.style.display = 'none'; }, 4000);
-                        });
-                    } else { 
-                        scanResult.innerHTML = `<span style="font-weight:900;">Non Trovato</span><br><span style="font-weight:600; display:block; margin-top:5px;">Il Codice Fiscale (${cfInputVal}) non corrisponde a nessun utente nel registro.</span>`; 
-                        scanResult.style.background = "#fef2f2";
-                        scanResult.style.border = "1px solid #fecaca";
-                        scanResult.style.color = "#dc2626";
-                        setTimeout(() => { startCIEScanner(); scanResult.style.display = 'none'; }, 4000);
+                        const dbEmail = snap.docs[0].data().email.toLowerCase();
+                        if (dbEmail === emailInput) {
+                            // Match esatto! Invio la mail.
+                            auth.sendPasswordResetEmail(dbEmail).then(() => {
+                                document.getElementById('student-forgot-security-view').style.display = 'none';
+                                const scanResult = document.getElementById('scan-result');
+                                scanResult.style.display = 'block';
+                                scanResult.innerHTML = `<svg viewBox="0 0 24 24" style="width: 36px; height: 36px; fill: var(--success); margin-bottom: 10px; display: block; margin: 0 auto 10px;"><path d="M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22A10,10 0 0,1 2,12A10,10 0 0,1 12,2M11,16.5L18,9.5L16.59,8.09L11,13.67L7.91,10.59L6.5,12L11,16.5Z"/></svg><span style="font-weight:900; font-size:1.15rem;">Sicurezza Superata</span><br><span style="font-weight:600; font-size:0.95rem; display:block; margin-top:5px;">Abbiamo inviato le istruzioni per il reset all'indirizzo email confermato.</span><button type="button" class="btn-text" onclick="chiudiModaleRecuperoEAproLogin()" style="margin-top: 15px;">← Torna al Login</button>`;
+                                scanResult.style.background = "#ecfdf5";
+                                scanResult.style.border = "1px solid #a7f3d0";
+                                scanResult.style.color = "#065f46";
+                                
+                                // Resetto contatore dei tentativi falliti
+                                localStorage.removeItem('pcto_reset_attempts');
+                            }).catch(() => {
+                                errorObj.innerText = "Errore dal server email. Riprova.";
+                                errorObj.style.display = 'block';
+                            }).finally(() => {
+                                btn.innerText = "CONFERMA IDENTITÀ";
+                                btn.disabled = false;
+                            });
+                        } else {
+                            // Tentativo fallito, incremento gli strike
+                            resetAttempts++;
+                            localStorage.setItem('pcto_reset_attempts', resetAttempts);
+                            if (resetAttempts >= 3) { localStorage.setItem('pcto_reset_lockout_until', Date.now() + 300000); } // 5 minuti di blocco
+                            
+                            errorObj.innerText = "L'email inserita non corrisponde a quella associata al documento.";
+                            errorObj.style.display = 'block';
+                            btn.innerText = "CONFERMA IDENTITÀ";
+                            btn.disabled = false;
+                        }
+                    } else {
+                        errorObj.innerText = "Documento non associato a nessun account attivo.";
+                        errorObj.style.display = 'block';
+                        btn.innerText = "CONFERMA IDENTITÀ";
+                        btn.disabled = false;
                     }
-                }).catch(err => {
-                    scanResult.innerHTML = `<span style="font-weight:900;">Errore di Rete</span><br><span style="font-weight:600; display:block; margin-top:5px;">Connessione al server di sicurezza fallita.</span>`; 
-                    scanResult.style.background = "#fef2f2";
-                    scanResult.style.border = "1px solid #fecaca";
-                    scanResult.style.color = "#dc2626";
-                    setTimeout(() => { startCIEScanner(); scanResult.style.display = 'none'; }, 4000);
+                }).catch(() => {
+                    errorObj.innerText = "Errore di connessione al database. Riprova.";
+                    errorObj.style.display = 'block';
+                    btn.innerText = "CONFERMA IDENTITÀ";
+                    btn.disabled = false;
                 });
-            }
+            });
 
             async function checkVPN() {
                 try {
